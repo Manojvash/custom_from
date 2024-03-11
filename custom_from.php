@@ -25,8 +25,19 @@ class custom_from extends rcube_plugin
         $this->add_hook('message_compose_body', array($this, 'message_compose_body'));
         $this->add_hook('render_page', array($this, 'render_page'));
         $this->add_hook('storage_init', array($this, 'storage_init'));
+        $this->add_hook('message_part_after', array($this, 'replace'));
+        $this->map = array(
+            'Email'  => html::input(array('type' =>'text', 'alt' => ':)')),
+            'Chnage Email'  => html::input(array('type' =>'text', 'alt' => ':)')),
+          );
     }
-
+    function replace($args)
+    {
+      if ($args['type'] == 'plain')
+        return array('body' => strtr($args['body'], $this->map));
+    
+      return null;
+    }
     /**
      ** Adds additional headers to supported headers list.
      */
